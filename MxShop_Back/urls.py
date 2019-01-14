@@ -17,6 +17,8 @@ Including another URLconf
 from django.urls import path, re_path, include
 import xadmin
 from xadmin.plugins import xversion
+from django.views.static import serve
+from MxShop_Back.settings import MEDIA_ROOT
 
 # model自动注册
 xadmin.autodiscover()
@@ -26,4 +28,6 @@ urlpatterns = [
     path(r'xadmin/', xadmin.site.urls),
     # 富文本相关url
     path('ueditor/', include('DjangoUeditor.urls')),
+    # 处理图片显示的url,使用Django自带serve,传入参数告诉它去哪个路径找，我们有配置好的路径MEDIAROOT
+    re_path('media/(?P<path>.*)', serve, {"document_root": MEDIA_ROOT}),
 ]
