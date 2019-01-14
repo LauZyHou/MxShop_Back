@@ -15,9 +15,15 @@ Including another URLconf
 """
 # from django.contrib import admin
 from django.urls import path, re_path, include
+import xadmin
+from xadmin.plugins import xversion
+
+# model自动注册
+xadmin.autodiscover()
+xversion.register_models()
 
 urlpatterns = [
-    # path('admin/', admin.site.urls),
+    path(r'xadmin/', xadmin.site.urls),
     # 富文本相关url
     path('ueditor/', include('DjangoUeditor.urls')),
 ]

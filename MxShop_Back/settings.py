@@ -38,18 +38,21 @@ AUTH_USER_MODEL = 'users.UserProfile'
 # Application definition
 
 INSTALLED_APPS = [
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'users.apps.UsersConfig',
     'rest_framework',
     'DjangoUeditor',
-    'users',
-    'goods',
-    'trade',
-    'user_operations',
+    'users.apps.UsersConfig',
+    'goods.apps.GoodsConfig',
+    'trade.apps.TradeConfig',
+    'user_operations.apps.UserOperationsConfig',
+    'crispy_forms',
+    'xadmin',
+    'reversion',
 ]
 
 MIDDLEWARE = [
@@ -132,3 +135,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+"""XAdmin"""
+
+# 修改使用中文界面
+LANGUAGE_CODE = 'zh-Hans'
+
+# 添加下面static目录定义
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+)
+STATIC_ROOT = os.path.join(BASE_DIR, 'collect_static')
