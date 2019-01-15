@@ -13,16 +13,25 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.views.static import serve
+from rest_framework.documentation import include_docs_urls
+
 # from django.contrib import admin
 from django.urls import path, re_path, include
-import xadmin
-from xadmin.plugins import xversion
 from django.views.static import serve
 from MxShop_Back.settings import MEDIA_ROOT
+# from rest_framework.routers import DefaultRouter
+# from goods.views_base import GoodsListView
+from goods.views import GoodsListView
+
+import xadmin
+from xadmin.plugins import xversion
 
 # model自动注册
 xadmin.autodiscover()
 xversion.register_models()
+
+# router = DefaultRouter()
 
 urlpatterns = [
     path(r'xadmin/', xadmin.site.urls),
@@ -30,4 +39,10 @@ urlpatterns = [
     path(r'ueditor/', include('DUEditor.urls')),
     # 处理图片显示的url,使用Django自带serve,传入参数告诉它去哪个路径找，我们有配置好的路径MEDIAROOT
     re_path('media/(?P<path>.*)', serve, {"document_root": MEDIA_ROOT}),
+    # restful
+    path(r'goods/', GoodsListView.as_view(), name="goods-list"),
+    # 自动化文档,1.11版本中注意此处前往不要加$符号
+    path('docs/', include_docs_urls(title='mtianyan超市文档')),
+    # DRF调试登录,配置了这个才会有登录按钮
+    path('api-auth/', include('rest_framework.urls')),
 ]

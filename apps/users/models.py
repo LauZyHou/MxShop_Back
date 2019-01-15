@@ -29,7 +29,7 @@ class UserProfile(AbstractUser):
 
     # py2里才有string转Unicode,py3里默认都是Unicode,直接用__str__()
     def __str__(self):
-        return self.name
+        return self.username
 
 
 class VerifyCode(models.Model):
