@@ -2,22 +2,27 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.http import Http404
 from rest_framework import status
+from rest_framework import mixins
+from rest_framework import generics
+from rest_framework.pagination import PageNumberPagination
 
 from .serializers import GoodsSerializer
 from .models import Goods
 
 
-class GoodsListView(APIView):
-    def get(self, response, format=None):
-        goods = Goods.objects.all()[:10]
-        serializer = GoodsSerializer(goods, many=True)
-        return Response(serializer.data)
+class GoodsPagination(PageNumberPagination):
+    """自定义分页,用于商品的分页"""
+    # 每页多少条记录
+    page_size = 10
+    # 可以在url参数中使用'page_size='来指定上面那个page_size的值
+    page_size_query_param = 'page_size'
+    # 这里指定的是分页时,页面url里表明在哪一页的参数名
+    page_query_param = 'p'
+    max_page_size = 100
 
-    def post(self, request, format=None):
-        # DRf的Request中数据都已经取出放在了data属性里,使用起来很方便
-        serializer = GoodsSerializer(data=request.data)
-        if serializer.is_valid():
-            # 这里save()根据对象是否已经存在去调用create()或者update()方法
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class GoodsListView(generics.ListAPIView):
+    # 设置排序规则,这样才能在分页时没有报错
+    queryset = Goods.objects.get_queryset().order_by("goods_sn")
+    serializer_class = GoodsSerializer
+    pagination_class = GoodsPagination

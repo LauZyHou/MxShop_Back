@@ -149,3 +149,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'collect_static')
 # 设置图片访问的路径
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+# 所有与drf相关的设置写在这里面,其中的key可以到rest_framework模块下的setting里去找
+REST_FRAMEWORK = {
+    # 分页.注意设置分页后JSON的格式就变了
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+}
