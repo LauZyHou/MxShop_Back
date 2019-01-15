@@ -5,6 +5,7 @@ from rest_framework import status
 from rest_framework import mixins
 from rest_framework import generics
 from rest_framework.pagination import PageNumberPagination
+from rest_framework import viewsets
 
 from .serializers import GoodsSerializer
 from .models import Goods
@@ -21,7 +22,7 @@ class GoodsPagination(PageNumberPagination):
     max_page_size = 100
 
 
-class GoodsListView(generics.ListAPIView):
+class GoodsListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     # 设置排序规则,这样才能在分页时没有报错
     queryset = Goods.objects.get_queryset().order_by("goods_sn")
     serializer_class = GoodsSerializer

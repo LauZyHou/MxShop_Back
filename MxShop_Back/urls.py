@@ -22,7 +22,8 @@ from django.views.static import serve
 from MxShop_Back.settings import MEDIA_ROOT
 # from rest_framework.routers import DefaultRouter
 # from goods.views_base import GoodsListView
-from goods.views import GoodsListView
+from goods.views import GoodsListViewSet
+from rest_framework.routers import DefaultRouter
 
 import xadmin
 from xadmin.plugins import xversion
@@ -31,16 +32,17 @@ from xadmin.plugins import xversion
 xadmin.autodiscover()
 xversion.register_models()
 
-# router = DefaultRouter()
+# 配置goods的url
+router = DefaultRouter()
+router.register(r'goods', GoodsListViewSet)
 
 urlpatterns = [
+    path('', include(router.urls)),
     path(r'xadmin/', xadmin.site.urls),
     # 富文本相关url
     path(r'ueditor/', include('DUEditor.urls')),
     # 处理图片显示的url,使用Django自带serve,传入参数告诉它去哪个路径找，我们有配置好的路径MEDIAROOT
     re_path('media/(?P<path>.*)', serve, {"document_root": MEDIA_ROOT}),
-    # restful
-    path(r'goods/', GoodsListView.as_view(), name="goods-list"),
     # 自动化文档,1.11版本中注意此处前往不要加$符号
     path('docs/', include_docs_urls(title='mtianyan超市文档')),
     # DRF调试登录,配置了这个才会有登录按钮

@@ -1,7 +1,7 @@
 # MxShop_Back
 学习慕学生鲜项目后端，Django REST framework。
 ## 项目结构
-MxShop：项目的配置目录
+MxShop_Back：项目的配置目录
 
 apps：存放所有app
 
