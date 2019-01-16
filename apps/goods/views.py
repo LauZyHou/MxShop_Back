@@ -16,12 +16,12 @@ from .filters import GoodsFilter
 
 class GoodsPagination(PageNumberPagination):
     """自定义分页,用于商品的分页"""
-    # 每页多少条记录
-    page_size = 10
+    # 每页多少条记录(这里应该适应前端)
+    page_size = 12
     # 可以在url参数中使用'page_size='来指定上面那个page_size的值
     page_size_query_param = 'page_size'
     # 这里指定的是分页时,页面url里表明在哪一页的参数名
-    page_query_param = 'p'
+    page_query_param = 'page'
     max_page_size = 100
 
 
@@ -33,7 +33,7 @@ class GoodsViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     # filter_fields = ('name', 'shop_price')
     filter_class = GoodsFilter
     search_fields = ('name', 'goods_brief', 'goods_desc')
-    ordering_fields = ('sold_num', 'add_time')
+    ordering_fields = ('sold_num', 'shop_price')
     # 设置默认的排序规则,以用于分页
     ordering = ('id',)
 
