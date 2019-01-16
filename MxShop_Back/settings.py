@@ -54,11 +54,13 @@ INSTALLED_APPS = [
     'xadmin',
     'reversion',
     'django_filters',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -67,6 +69,9 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'MxShop_Back.urls'
+
+# 允许随意跨域
+CORS_ORIGIN_ALLOW_ALL = True
 
 TEMPLATES = [
     {
