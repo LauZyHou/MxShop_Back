@@ -34,7 +34,7 @@ xversion.register_models()
 
 # 配置goods的url
 router = DefaultRouter()
-router.register(r'goods', GoodsListViewSet)
+router.register(r'goods', GoodsListViewSet, base_name="goods")
 
 urlpatterns = [
     path('', include(router.urls)),

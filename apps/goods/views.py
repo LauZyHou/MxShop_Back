@@ -6,9 +6,12 @@ from rest_framework import mixins
 from rest_framework import generics
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import viewsets
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 
 from .serializers import GoodsSerializer
 from .models import Goods
+from .filters import GoodsFilter
 
 
 class GoodsPagination(PageNumberPagination):
@@ -23,7 +26,11 @@ class GoodsPagination(PageNumberPagination):
 
 
 class GoodsListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
-    # 设置排序规则,这样才能在分页时没有报错
-    queryset = Goods.objects.get_queryset().order_by("goods_sn")
     serializer_class = GoodsSerializer
     pagination_class = GoodsPagination
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
+    queryset = Goods.objects.all()
+    # filter_fields = ('name', 'shop_price')
+    filter_class = GoodsFilter
+    search_fields = ('name', 'goods_brief', 'goods_desc')
+    ordering_fields = ('sold_num', 'add_time')

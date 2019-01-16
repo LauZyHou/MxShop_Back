@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'xadmin',
     'reversion',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
