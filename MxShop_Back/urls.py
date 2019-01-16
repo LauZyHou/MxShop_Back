@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.views.static import serve
 from rest_framework.documentation import include_docs_urls
+from rest_framework.authtoken import views
 
 # from django.contrib import admin
 from django.urls import path, re_path, include
@@ -49,4 +50,6 @@ urlpatterns = [
     path('docs/', include_docs_urls(title='mtianyan超市文档')),
     # DRF调试登录,配置了这个才会有登录按钮
     path('api-auth/', include('rest_framework.urls')),
+    # drf自带的token授权登录,获取token需要向该地址post数据(username和password)
+    path('api-token-auth/', views.obtain_auth_token),
 ]
