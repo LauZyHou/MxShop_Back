@@ -19,22 +19,24 @@ from rest_framework.documentation import include_docs_urls
 # from django.contrib import admin
 from django.urls import path, re_path, include
 from django.views.static import serve
-from MxShop_Back.settings import MEDIA_ROOT
 # from rest_framework.routers import DefaultRouter
 # from goods.views_base import GoodsListView
-from goods.views import GoodsListViewSet
 from rest_framework.routers import DefaultRouter
-
 import xadmin
 from xadmin.plugins import xversion
+
+from MxShop_Back.settings import MEDIA_ROOT
+from goods.views import GoodsViewSet, CategoryViewSet
 
 # model自动注册
 xadmin.autodiscover()
 xversion.register_models()
 
-# 配置goods的url
 router = DefaultRouter()
-router.register(r'goods', GoodsListViewSet, base_name="goods")
+# 配置goods的url
+router.register(r'goods', GoodsViewSet, base_name="goods")
+# 配置category的url
+router.register(r'categories', CategoryViewSet, base_name="categories")
 
 urlpatterns = [
     path('', include(router.urls)),

@@ -9,8 +9,8 @@ from rest_framework import viewsets
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 
-from .serializers import GoodsSerializer
-from .models import Goods
+from .serializers import GoodsSerializer, CategorySerializer
+from .models import Goods, GoodsCategory
 from .filters import GoodsFilter
 
 
@@ -25,7 +25,7 @@ class GoodsPagination(PageNumberPagination):
     max_page_size = 100
 
 
-class GoodsListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+class GoodsViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     serializer_class = GoodsSerializer
     pagination_class = GoodsPagination
     filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
@@ -34,3 +34,18 @@ class GoodsListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     filter_class = GoodsFilter
     search_fields = ('name', 'goods_brief', 'goods_desc')
     ordering_fields = ('sold_num', 'add_time')
+    # 设置默认的排序规则,以用于分页
+    ordering = ('id',)
+
+
+class CategoryViewSet(mixins.ListModelMixin,
+                      mixins.RetrieveModelMixin,
+                      viewsets.GenericViewSet):
+    """
+    list:
+      商品分类列表数据
+    """
+    # 只要去获取第一级别的类就可以了,它序列化时序列化了子类二类,子类二类序列化时又序列化了三类
+    queryset = GoodsCategory.objects.filter(category_type=1)
+    serializer_class = CategorySerializer
+    # 继承了mixins.RetrieveModelMixin就可以直接用RESTful的/xxxs/id来访问到资源中的具体某一个
