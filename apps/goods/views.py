@@ -8,6 +8,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework import viewsets
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
+from rest_framework.authentication import TokenAuthentication
 
 from .serializers import GoodsSerializer, CategorySerializer
 from .models import Goods, GoodsCategory
@@ -36,6 +37,8 @@ class GoodsViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     ordering_fields = ('sold_num', 'shop_price')
     # 设置默认的排序规则,以用于分页
     ordering = ('id',)
+    # 设置Token认证.这里改用JWT认证了,将它注解掉
+    # authentication_classes = (TokenAuthentication, )
 
 
 class CategoryViewSet(mixins.ListModelMixin,

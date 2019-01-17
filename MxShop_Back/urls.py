@@ -25,6 +25,7 @@ from django.views.static import serve
 from rest_framework.routers import DefaultRouter
 import xadmin
 from xadmin.plugins import xversion
+from rest_framework_jwt.views import obtain_jwt_token
 
 from MxShop_Back.settings import MEDIA_ROOT
 from goods.views import GoodsViewSet, CategoryViewSet
@@ -52,4 +53,6 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     # drf自带的token授权登录,获取token需要向该地址post数据(username和password)
     path('api-token-auth/', views.obtain_auth_token),
+    # jwt的token认证,现在改用这个而不用上面那个drf自带的了
+    path('login/', obtain_jwt_token),
 ]

@@ -165,6 +165,9 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
+        # 如果前端带错误的(如过期的)Token,那么在访问公共页面时还是会出认证错误
+        # 所以不在这里配置全局的Token认证,而是改到views里配置
+        # 'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',  # 改用JWT
     )
 }
