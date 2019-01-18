@@ -51,3 +51,5 @@ https://github.com/dhcn/DUEditor
 ```
 https://github.com/mtianyan/VueDjangoFrameWorkShop
 ```
+## 其它
+在MxShop_Back子目录下创建privacy.py，里面设置自己的第三方API KEY，这些隐私设置不会被提交。

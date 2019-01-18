@@ -28,7 +28,8 @@ from xadmin.plugins import xversion
 from rest_framework_jwt.views import obtain_jwt_token
 
 from MxShop_Back.settings import MEDIA_ROOT
-from goods.views import GoodsViewSet, CategoryViewSet
+from goods.views import GoodsViewSet, CategoryViewSet, HotSearchsViewset
+from users.views import SmsCodeViewset
 
 # model自动注册
 xadmin.autodiscover()
@@ -39,6 +40,10 @@ router = DefaultRouter()
 router.register(r'goods', GoodsViewSet, base_name="goods")
 # 配置category的url
 router.register(r'categories', CategoryViewSet, base_name="categories")
+# 热搜词
+router.register(r'hotsearchs', HotSearchsViewset, base_name="hotsearchs")
+# 配置codes(验证码)的url
+router.register(r'code', SmsCodeViewset, base_name="code")
 
 urlpatterns = [
     path('', include(router.urls)),

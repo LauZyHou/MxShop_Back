@@ -32,6 +32,15 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# 设置邮箱和用户名和手机号均可登录
+AUTHENTICATION_BACKENDS = (
+    'users.views.CustomBackend',
+    # 'social_core.backends.weibo.WeiboOAuth2',
+    # 'social_core.backends.qq.QQOAuth2',
+    # 'social_core.backends.weixin.WeixinOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
 # 替换Django默认的用户模型
 AUTH_USER_MODEL = 'users.UserProfile'
 
@@ -171,3 +180,17 @@ REST_FRAMEWORK = {
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',  # 改用JWT
     )
 }
+
+import datetime
+
+JWT_AUTH = {
+    # 设置过期时间为7天
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7),
+    # 请求时候HTTP头的Token前面的字符串,默认就是JWT
+    'JWT_AUTH_HEADER_PREFIX': 'JWT',
+}
+
+# 手机号码正则表达式
+REGEX_MOBILE = "^1[358]\d{9}$|^147\d{8}$|^176\d{8}$"
+
+

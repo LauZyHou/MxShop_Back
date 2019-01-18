@@ -106,3 +106,6 @@ venv.bak/
 # IDE
 .idea/
 .vscode/
+
+# 一些私密的APIKEY的配置文件
+privacy.py
