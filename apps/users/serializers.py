@@ -58,12 +58,13 @@ class UserRegSerializer(serializers.ModelSerializer):
 
     # 调用父类的create方法，该方法会返回当前model的实例化对象即user。
     # 前面是将父类原有的create进行执行，后面是加入自己的逻辑
-    def create(self, validated_data):
-        """覆写create以实现密码单独设置,因为ModelSerializer会把它明文保存"""
-        user = super(UserRegSerializer, self).create(validated_data=validated_data)
-        user.set_password(validated_data["password"])
-        user.save()
-        return user
+    # def create(self, validated_data):
+    #     """覆写create以实现密码单独设置,因为ModelSerializer会把它明文保存"""
+    #     user = super(UserRegSerializer, self).create(validated_data=validated_data)
+    #     user.set_password(validated_data["password"])
+    #     user.save()
+    #     return user
+    """改为用信号量实现"""
 
     def validate_code(self, code):
 
