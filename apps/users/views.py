@@ -14,8 +14,8 @@ from rest_framework.response import Response
 from rest_framework import mixins, permissions, authentication
 from rest_framework import viewsets, status
 from users.models import VerifyCode
-from users.serializers import SmsSerializer\
-    # , UserRegSerializer, UserDetailSerializer
+from users.serializers import SmsSerializer, UserRegSerializer \
+    # , UserDetailSerializer
 from utils.yunpian import YunPian
 
 User = get_user_model()
@@ -80,3 +80,11 @@ class SmsCodeViewset(mixins.CreateModelMixin, viewsets.GenericViewSet):
             return Response({
                 "mobile": mobile
             }, status=status.HTTP_201_CREATED)
+
+
+class UserViewset(mixins.CreateModelMixin, mixins.UpdateModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+    """
+    用户
+    """
+    serializer_class = UserRegSerializer
+    queryset = User.objects.all()

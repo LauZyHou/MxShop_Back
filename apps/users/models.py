@@ -20,6 +20,7 @@ class UserProfile(AbstractUser):
     name = models.CharField(max_length=30, null=True, blank=True, verbose_name="姓名")
     birthday = models.DateField(null=True, blank=True, verbose_name="出生年月")
     gender = models.CharField(max_length=6, choices=GENDER_CHOICES, default="female", verbose_name="性别")
+    # 这里如果设置成不允许为null,那么在用户注册的Serializer里因为用了ModelSerializer,就要求mobile是必填的
     mobile = models.CharField(null=True, blank=True, max_length=11, verbose_name="电话", help_text="电话号码")
     email = models.EmailField(max_length=100, null=True, blank=True, verbose_name="邮箱")
 

@@ -29,7 +29,7 @@ from rest_framework_jwt.views import obtain_jwt_token
 
 from MxShop_Back.settings import MEDIA_ROOT
 from goods.views import GoodsViewSet, CategoryViewSet, HotSearchsViewset
-from users.views import SmsCodeViewset
+from users.views import SmsCodeViewset, UserViewset
 
 # model自动注册
 xadmin.autodiscover()
@@ -44,6 +44,8 @@ router.register(r'categories', CategoryViewSet, base_name="categories")
 router.register(r'hotsearchs', HotSearchsViewset, base_name="hotsearchs")
 # 配置codes(验证码)的url
 router.register(r'code', SmsCodeViewset, base_name="code")
+# 配置users的url
+router.register(r'users', UserViewset, base_name="users")
 
 urlpatterns = [
     path('', include(router.urls)),
