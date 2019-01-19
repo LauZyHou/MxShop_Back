@@ -48,7 +48,9 @@ class CategoryViewSet(mixins.ListModelMixin,
                       viewsets.GenericViewSet):
     """
     list:
-      商品分类列表数据
+        商品分类列表数据
+    retrieve:
+        获取商品分类详情
     """
     # 只要去获取第一级别的类就可以了,它序列化时序列化了子类二类,子类二类序列化时又序列化了三类
     queryset = GoodsCategory.objects.filter(category_type=1)

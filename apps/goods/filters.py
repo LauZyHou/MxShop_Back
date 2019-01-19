@@ -8,7 +8,7 @@ from .models import Goods
 class GoodsFilter(filters.FilterSet):
     """商品的过滤类"""
     # 区间查询,指定区间的最大最小值
-    pricemin = filters.NumberFilter(field_name="shop_price", lookup_expr='gte')
+    pricemin = filters.NumberFilter(field_name="shop_price", lookup_expr='gte', help_text="最低价格")
     pricemax = filters.NumberFilter(field_name="shop_price", lookup_expr='lte')
     # 模糊查询,这里带i是忽略大小写
     name = filters.CharFilter(field_name="name", lookup_expr="icontains")
@@ -24,4 +24,4 @@ class GoodsFilter(filters.FilterSet):
 
     class Meta:
         model = Goods
-        fields = ['pricemin', 'pricemax', 'name', 'top_category' , 'is_hot']
+        fields = ['pricemin', 'pricemax', 'name', 'top_category', 'is_hot']

@@ -15,8 +15,8 @@ from rest_framework.response import Response
 from rest_framework import mixins, permissions, authentication
 from rest_framework import viewsets, status
 from users.models import VerifyCode
-from users.serializers import SmsSerializer, UserRegSerializer \
-    # , UserDetailSerializer
+from users.serializers import SmsSerializer, UserRegSerializer, UserDetailSerializer
+# , UserDetailSerializer
 from utils.yunpian import YunPian
 
 User = get_user_model()
@@ -83,15 +83,31 @@ class SmsCodeViewset(mixins.CreateModelMixin, viewsets.GenericViewSet):
             }, status=status.HTTP_201_CREATED)
 
 
-class UserViewset(mixins.CreateModelMixin, mixins.UpdateModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+class UserViewset(mixins.CreateModelMixin,
+                  mixins.UpdateModelMixin,
+                  mixins.RetrieveModelMixin,
+                  viewsets.GenericViewSet):
     """
     用户
     """
-    serializer_class = UserRegSerializer
+    # serializer_class = UserRegSerializer
     queryset = User.objects.all()
+    # 用户认证
+    authentication_classes = (JSONWebTokenAuthentication, authentication.SessionAuthentication)
+
+    # 如果用permission_classes定义访问权限认证IsAuthenticated已登录(否则401)
+    # 那么对这个整个用户视图都生效,但用户在注册时肯定不能在"已登录"状态下
+    # 所以将permission以动态的方式定义
+    def get_permissions(self):
+        """覆写,以在不同的请求方法下使用不同的权限认证"""
+        if self.action == "retrieve":
+            return [permissions.IsAuthenticated()]
+        elif self.action == "create":
+            return [permissions.AllowAny()]  # 允许所有用户
+        return []  # 使用空数组也和仅有AllowAny()一样的
 
     def create(self, request, *args, **kwargs):
-        """重载以将token返回给用户(实现注册完自动登录)"""
+        """覆写,以将token加入response给用户(实现注册完自动登录)"""
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = self.perform_create(serializer)
@@ -105,5 +121,18 @@ class UserViewset(mixins.CreateModelMixin, mixins.UpdateModelMixin, mixins.Retri
         return Response(re_dict, status=status.HTTP_201_CREATED, headers=headers)
 
     def perform_create(self, serializer):
-        """重载,将user返回以在create里能取到"""
+        """覆写,将user返回以在create里能取到"""
         return serializer.save()
+
+    # 该方法在POST(retrieve)和DELETE(destroy)和PUT(update)时都调用,但对用户而言仅应能操作自己这个用户
+    def get_object(self):
+        """覆写,不管传什么id,都只返回当前用户"""
+        return self.request.user
+
+    def get_serializer_class(self):
+        """覆写,在不同的请求下做不同的序列化"""
+        if self.action == "retrieve":
+            return UserDetailSerializer
+        elif self.action == "create":
+            return UserRegSerializer
+        return UserDetailSerializer

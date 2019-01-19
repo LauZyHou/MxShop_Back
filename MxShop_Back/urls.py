@@ -58,7 +58,7 @@ urlpatterns = [
     # 处理图片显示的url,使用Django自带serve,传入参数告诉它去哪个路径找，我们有配置好的路径MEDIAROOT
     re_path('media/(?P<path>.*)', serve, {"document_root": MEDIA_ROOT}),
     # 自动化文档,1.11版本中注意此处前往不要加$符号
-    path('docs/', include_docs_urls(title='mtianyan超市文档')),
+    path('docs/', include_docs_urls(title='MxShop文档')),
     # DRF调试登录,配置了这个才会有登录按钮
     path('api-auth/', include('rest_framework.urls')),
     # drf自带的token授权登录,获取token需要向该地址post数据(username和password)
