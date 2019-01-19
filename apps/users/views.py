@@ -7,6 +7,7 @@ from django.shortcuts import render
 from django.contrib.auth import get_user_model
 # 这个方法会去setting中找AUTH_USER_MODEL
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+# 用于生成payload然后生成token
 from rest_framework_jwt.serializers import jwt_payload_handler, jwt_encode_handler
 
 from MxShop_Back.privacy import YUNPIAN_KEY
@@ -88,3 +89,21 @@ class UserViewset(mixins.CreateModelMixin, mixins.UpdateModelMixin, mixins.Retri
     """
     serializer_class = UserRegSerializer
     queryset = User.objects.all()
+
+    def create(self, request, *args, **kwargs):
+        """重载以将token返回给用户(实现注册完自动登录)"""
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = self.perform_create(serializer)
+
+        re_dict = serializer.data
+        payload = jwt_payload_handler(user)
+        re_dict["token"] = jwt_encode_handler(payload)
+        re_dict["name"] = user.name if user.name else user.username
+
+        headers = self.get_success_headers(serializer.data)
+        return Response(re_dict, status=status.HTTP_201_CREATED, headers=headers)
+
+    def perform_create(self, serializer):
+        """重载,将user返回以在create里能取到"""
+        return serializer.save()

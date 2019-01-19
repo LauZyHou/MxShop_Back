@@ -177,7 +177,8 @@ REST_FRAMEWORK = {
         # 如果前端带错误的(如过期的)Token,那么在访问公共页面时还是会出认证错误
         # 所以不在这里配置全局的Token认证,而是改到views里配置
         # 'rest_framework.authentication.TokenAuthentication',
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',  # 改用JWT
+        # 'rest_framework_jwt.authentication.JSONWebTokenAuthentication',  # 改用JWT
+        # JWT也和普通的Token一样,还是配置到具体要做验证的view里面去
     )
 }
 
@@ -186,8 +187,8 @@ import datetime
 JWT_AUTH = {
     # 设置过期时间为7天
     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7),
-    # 请求时候HTTP头的Token前面的字符串,默认就是JWT
-    'JWT_AUTH_HEADER_PREFIX': 'JWT',
+    # 请求时候HTTP头的Token前面的字符串,默认就是JWT.这里改掉让前端不知道服务器用的JWT
+    'JWT_AUTH_HEADER_PREFIX': 'Bearer',
 }
 
 # 手机号码正则表达式

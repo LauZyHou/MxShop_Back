@@ -26,7 +26,9 @@ class GoodsPagination(PageNumberPagination):
     max_page_size = 100
 
 
-class GoodsViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+class GoodsViewSet(mixins.ListModelMixin,  # 列表(一堆有序的商品)
+                   mixins.RetrieveModelMixin,  # 详情(单个商品)
+                   viewsets.GenericViewSet):
     serializer_class = GoodsSerializer
     pagination_class = GoodsPagination
     filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)

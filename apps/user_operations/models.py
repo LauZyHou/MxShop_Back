@@ -20,10 +20,12 @@ class UserFav(models.Model):
         verbose_name = '用户收藏'
         verbose_name_plural = verbose_name
 
-        # 多个字段作为一个联合唯一索引
+        # 多个字段作为一个联合唯一索引,这样就只能收藏一次(重复收藏数据库里也不会变多)
         unique_together = ("user", "goods")
 
+    # @property
     def __str__(self):
+        # name可能不存在,所以用username
         return self.user.username
 
 

@@ -29,6 +29,7 @@ from rest_framework_jwt.views import obtain_jwt_token
 
 from MxShop_Back.settings import MEDIA_ROOT
 from goods.views import GoodsViewSet, CategoryViewSet, HotSearchsViewset
+from user_operations.views import UserFavViewset
 from users.views import SmsCodeViewset, UserViewset
 
 # model自动注册
@@ -46,6 +47,8 @@ router.register(r'hotsearchs', HotSearchsViewset, base_name="hotsearchs")
 router.register(r'code', SmsCodeViewset, base_name="code")
 # 配置users的url
 router.register(r'users', UserViewset, base_name="users")
+# 配置用户收藏的url
+router.register(r'userfavs', UserFavViewset, base_name="userfavs")
 
 urlpatterns = [
     path('', include(router.urls)),

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Goods, GoodsCategory, HotSearchWords
+from .models import Goods, GoodsCategory, HotSearchWords, GoodsImage
 
 
 # ---------------------------------------------------------------
@@ -33,12 +33,19 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 # ---------------------------------------------------------------
+class GoodsImageSerializer(serializers.ModelSerializer):
+    """商品详情页左侧轮播图"""
+
+    class Meta:
+        model = GoodsImage
+        fields = ("image",)
 
 
 class GoodsSerializer(serializers.ModelSerializer):
     """商品序列化"""
     # 自己定义字段去覆盖自动序列化的字段
     category = CategorySerializer()
+    images = GoodsImageSerializer(many=True)  # 加入轮播图(使用商品为外键,一对多)
 
     class Meta:
         model = Goods
