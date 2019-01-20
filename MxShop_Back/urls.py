@@ -29,7 +29,8 @@ from rest_framework_jwt.views import obtain_jwt_token
 
 from MxShop_Back.settings import MEDIA_ROOT
 from goods.views import GoodsViewSet, CategoryViewSet, HotSearchsViewset
-from user_operations.views import UserFavViewset, LeavingMessageViewset
+from trade.views import ShoppingCartViewset
+from user_operations.views import UserFavViewset, LeavingMessageViewset, AddressViewset
 from users.views import SmsCodeViewset, UserViewset
 
 # model自动注册
@@ -51,6 +52,11 @@ router.register(r'users', UserViewset, base_name="users")
 router.register(r'userfavs', UserFavViewset, base_name="userfavs")
 # 配置用户留言的url
 router.register(r'messages', LeavingMessageViewset, base_name="messages")
+# 收货地址
+router.register(r'address', AddressViewset, base_name="address")
+# 购物车
+router.register(r'shopcarts', ShoppingCartViewset, base_name="shopcarts")
+
 
 urlpatterns = [
     path('', include(router.urls)),

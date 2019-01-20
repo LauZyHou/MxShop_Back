@@ -6,7 +6,7 @@ from rest_framework import permissions
 
 class IsOwnerOrReadOnly(permissions.BasePermission):
     """
-    这里用于做[收藏]的权限认证
+    这里用于做[收藏],[购物车]等的权限认证
     见:https://www.django-rest-framework.org/api-guide/permissions/#examples
     """
 
@@ -16,5 +16,5 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
             return True
 
         # 否则就要做权限认证
-        # 这里收藏表的外键不叫owner而是user,自己只能操作自己这个user的,所以把这里改成user
+        # 这里这些表的外键不叫owner而是user,自己只能操作自己这个user的,所以把这里改成user
         return obj.user == request.user

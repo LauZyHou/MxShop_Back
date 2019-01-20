@@ -54,6 +54,7 @@ class LeavingMessageSerializer(serializers.ModelSerializer):
 
 
 class AddressSerializer(serializers.ModelSerializer):
+    """用户收货地址"""
     user = serializers.HiddenField(
         default=serializers.CurrentUserDefault()
     )
