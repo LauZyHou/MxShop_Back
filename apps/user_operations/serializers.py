@@ -9,8 +9,9 @@ from goods.serializers import GoodsSerializer
 
 
 class UserFavDetailSerializer(serializers.ModelSerializer):
+    """收藏商品的详细信息"""
     # 通过goods_id拿到商品信息。就需要嵌套的Serializer
-    goods = GoodsSerializer()
+    goods = GoodsSerializer() # 这里为了简单就用goods的所有字段了
 
     class Meta:
         model = UserFav
@@ -40,9 +41,11 @@ class UserFavSerializer(serializers.ModelSerializer):
 
 
 class LeavingMessageSerializer(serializers.ModelSerializer):
+    """用户留言"""
     user = serializers.HiddenField(
         default=serializers.CurrentUserDefault()
     )
+    # read_only只返回,不提交
     add_time = serializers.DateTimeField(read_only=True, format='%Y-%m-%d %H:%M')
 
     class Meta:

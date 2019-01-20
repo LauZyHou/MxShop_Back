@@ -28,7 +28,7 @@ class UserFavViewset(viewsets.GenericViewSet,
     # queryset = UserFav.objects.all()
     # 访问权限认证:IsAuthenticated已登录(否则401),IsOwnerOrReadOnly只能删自己的(否则404)
     permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)
-    serializer_class = UserFavSerializer
+    # serializer_class = UserFavSerializer
     # 根据goods_id来定位资源,而不再根据id,这样在删除时和查看收藏时都更加方便和合理
     lookup_field = 'goods_id'
     # lookup_field = 'goods'
@@ -55,3 +55,25 @@ class UserFavViewset(viewsets.GenericViewSet,
             return UserFavSerializer
 
         return UserFavSerializer
+
+
+class LeavingMessageViewset(mixins.ListModelMixin,
+                            mixins.DestroyModelMixin,
+                            mixins.CreateModelMixin,
+                            viewsets.GenericViewSet):
+    """
+    list:
+        获取用户留言
+    create:
+        添加留言
+    delete:
+        删除留言功能
+    """
+
+    permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)
+    authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
+    serializer_class = LeavingMessageSerializer
+
+    # 只能看到自己的留言
+    def get_queryset(self):
+        return UserLeavingMessage.objects.filter(user=self.request.user)
